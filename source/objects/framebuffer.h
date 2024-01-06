@@ -14,7 +14,7 @@ namespace graphics_abstraction
 			{
 				internal::GLuint id = 0;
 				framebuffer()
-				{					
+				{
 					internal::glGenFramebuffers(1, &id);
 					internal::glBindFramebuffer(GL_FRAMEBUFFER, id);
 				}
@@ -25,19 +25,19 @@ namespace graphics_abstraction
 					switch (color_buffers.at(number)->texture_type)
 					{
 					case graphics_abstraction::texture_type::texture_1d:
-						internal::glFramebufferTexture1D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, 
+						internal::glFramebufferTexture1D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + number,
 							GL_TEXTURE_1D, static_cast<texture*>(color_buffers.at(number))->id, 0);
 						break;
 					case graphics_abstraction::texture_type::texture_2d:
-						internal::glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, 
+						internal::glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + number,
 							GL_TEXTURE_2D, static_cast<texture*>(color_buffers.at(number))->id, 0);
 						break;
 					case graphics_abstraction::texture_type::texture_3d:
-						internal::glFramebufferTexture3D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, 
+						internal::glFramebufferTexture3D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + number,
 							GL_TEXTURE_3D, static_cast<texture*>(color_buffers.at(number))->id, 0, 0);
 						break;
 					case graphics_abstraction::texture_type::renderbuffer:
-						internal::glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, 
+						internal::glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + number,
 							GL_RENDERBUFFER, static_cast<texture*>(color_buffers.at(number))->id);
 						return;
 					}
@@ -60,6 +60,25 @@ namespace graphics_abstraction
 						internal::glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, static_cast<texture*>(depth_stencil_buffer)->id);
 						return;
 					}
+				}
+
+				virtual void clear_color_buffers(float r, float g, float b, float a)
+				{
+					internal::glBindFramebuffer(GL_FRAMEBUFFER, id);
+					internal::glClearColor(r, g, b, a);
+					internal::glClear(GL_COLOR_BUFFER_BIT);
+				}
+
+				virtual void clear_depth_buffer()
+				{
+					internal::glBindFramebuffer(GL_FRAMEBUFFER, id);
+					internal::glClear(GL_DEPTH_BUFFER_BIT);
+				}
+
+				virtual void clear_stencil_buffer()
+				{
+					internal::glBindFramebuffer(GL_FRAMEBUFFER, id);
+					internal::glClear(GL_STENCIL_BUFFER_BIT);
 				}
 
 			protected:

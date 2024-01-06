@@ -238,25 +238,6 @@ namespace graphics_abstraction
 					return true;
 				};
 
-				virtual bool clear_current_framebuffer_color_buffer(float r, float g, float b, float a)
-				{
-					internal::glClearColor(r, g, b, a);
-					internal::glClear(GL_COLOR_BUFFER_BIT);
-					return true;
-				}
-
-				virtual bool clear_current_framebuffer_depth_buffer()
-				{
-					internal::glClear(GL_DEPTH_BUFFER_BIT);
-					return true;
-				}
-
-				virtual bool clear_current_framebuffer_stencil_buffer()
-				{
-					internal::glClear(GL_STENCIL_BUFFER_BIT);
-					return true;
-				}
-
 				virtual bool set_screen_size(int width, int height)
 				{
 					internal::glViewport(0, 0, width, height);
